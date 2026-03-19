@@ -7,6 +7,7 @@ AdHarbor is a self-hosted network-wide ad blocking setup based on Pi-hole and Do
 - A `docker-compose.yml` for running Pi-hole on a Docker host
 - A `.env.example` template for local configuration
 - A FRITZ!Box setup guide for using Pi-hole as the network DNS server
+- A Synology deployment guide for always-on home NAS hosting
 - A hardened password-file workflow so the Pi-hole admin secret is not stored in `.env`
 - A backup script for the persistent Pi-hole state
 
@@ -15,6 +16,10 @@ AdHarbor is a self-hosted network-wide ad blocking setup based on Pi-hole and Do
 - A Docker host that runs continuously in your home network
 - A static IP address or DHCP reservation for that host
 - A FRITZ!Box that will hand out the Pi-hole address to clients
+
+## Recommended Host
+
+For a home setup, a Synology NAS is usually a better target than a laptop or desktop because it stays online and already has Docker support through Container Manager.
 
 ## Quick Start
 
@@ -51,6 +56,8 @@ AdHarbor is a self-hosted network-wide ad blocking setup based on Pi-hole and Do
 
 6. Follow the FRITZ!Box guide in `docs/fritzbox.md` so clients use Pi-hole for DNS.
 
+If you are deploying on a Synology NAS, start with `docs/synology.md`.
+
 ## Recommended FRITZ!Box Preparation
 
 - Reserve a fixed LAN IP for the Docker host in the FRITZ!Box
@@ -67,10 +74,22 @@ Start:
 docker compose up -d
 ```
 
+Synology start:
+
+```bash
+cd /volume1/docker/AdHarbor && sudo docker compose up -d
+```
+
 Stop:
 
 ```bash
 docker compose down
+```
+
+Synology stop:
+
+```bash
+cd /volume1/docker/AdHarbor && sudo docker compose down
 ```
 
 View logs:
@@ -79,11 +98,23 @@ View logs:
 docker compose logs -f
 ```
 
+Synology logs:
+
+```bash
+cd /volume1/docker/AdHarbor && sudo docker compose logs -f
+```
+
 Update Pi-hole:
 
 ```bash
 docker compose pull
 docker compose up -d
+```
+
+Synology update:
+
+```bash
+cd /volume1/docker/AdHarbor && sudo docker compose pull && sudo docker compose up -d
 ```
 
 Validate the Compose setup:
@@ -123,6 +154,7 @@ Backup persistent data:
 - Put the Docker host on a DHCP reservation or static IP so the FRITZ!Box DNS setting stays valid
 
 See `docs/security.md` for the hardened operating guidance and `docs/backup-restore.md` for recovery steps.
+See `docs/synology.md` for the NAS-specific deployment flow.
 
 ## Next Good Step
 
