@@ -4,8 +4,6 @@ services:
     image: ${PIHOLE_IMAGE}
     hostname: ${PIHOLE_HOSTNAME}
     restart: unless-stopped
-    cap_add:
-      - NET_ADMIN
     ports:
       - "${PIHOLE_DNS_PORT}:53/tcp"
       - "${PIHOLE_DNS_PORT}:53/udp"
@@ -14,9 +12,12 @@ services:
       TZ: ${TZ}
       FTLCONF_dns_listeningMode: all
       FTLCONF_dns_upstreams: ${PIHOLE_UPSTREAM_DNS}
-      FTLCONF_local_ipv4: ${LOCAL_IPV4}
-      FTLCONF_webserver_api_password: ${PIHOLE_WEBPASSWORD}
+      WEBPASSWORD_FILE: /run/secrets/pihole_webpassword
     volumes:
       - ./volumes/etc-pihole:/etc/pihole
-      - ./volumes/etc-dnsmasq.d:/etc/dnsmasq.d
+    secrets:
+      - pihole_webpassword
 
+secrets:
+  pihole_webpassword:
+    file: ./.secrets/pihole_webpassword.txt
